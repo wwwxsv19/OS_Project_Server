@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mine.osproject.global.config.filter.JwtFilter;
+import mine.osproject.global.config.filter.LoginFilter;
 import mine.osproject.global.utils.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManager authManager = authenticationManager(config);
 
-        /* LoginFilter 설정 */
+        LoginFilter loginFilter = new LoginFilter(authManager, objectMapper, jwtUtil);
+        loginFilter.setFilterProcessesUrl("/auth/login");
 
         http
                 .cors(Customizer.withDefaults())
@@ -54,9 +56,8 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 )
 
+                .addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-
-                /* Login Filter 추가 */
 
                 .sessionManagement(
                         session -> session

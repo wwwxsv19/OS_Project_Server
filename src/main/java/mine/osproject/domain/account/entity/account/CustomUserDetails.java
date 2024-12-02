@@ -26,9 +26,8 @@ public class CustomUserDetails implements UserDetails {
         return user.getUserImage();
     }
 
-    @Override
-    public String getPassword() {
-        return user.getUserPassword();
+    public String getUserRole() {
+        return user.getUserRole().name();
     }
 
     // 사용 안 함
@@ -40,6 +39,11 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
         return null;
     }
 
