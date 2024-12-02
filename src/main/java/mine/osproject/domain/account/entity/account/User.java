@@ -1,11 +1,10 @@
 package mine.osproject.domain.account.entity.account;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import mine.osproject.domain.account.entity.account.types.Role;
 
+@Builder
 @Entity
 @Table(name = "user_tbl")
 @Data
@@ -31,6 +30,10 @@ public class User {
 
     @Column(name = "user_password")
     private String userPassword;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
+    private Role userRole;
 
     /* OneToMany Post 필드 추가 */
 }
